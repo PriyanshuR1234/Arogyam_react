@@ -49,7 +49,7 @@ const Navbar = ({ toggleEmergency }) => {
             <img src="/logo.jpg" alt="Logo" className="h-full w-full object-cover" />
           </div>
           <div className="hidden md:block">
-            <h1 className="text-3xl font-serif font-bold text-teal-700 leading-none tracking-wide">
+            <h1 className="text-3xl font-serif font-bold text-slate-400 leading-none tracking-wide">
               Arogyam <span className="text-teal-400 block text-sm font-sans font-medium tracking-widest uppercase mt-1">Healthcare</span>
             </h1>
           </div>
@@ -57,7 +57,7 @@ const Navbar = ({ toggleEmergency }) => {
 
         {/* Actions */}
         <div className="flex items-center gap-6">
-          <button className="hidden md:flex items-center gap-2 text-slate-300 hover:text-teal-400 transition-colors">
+          <button className="hidden md:flex items-center gap-2 text-slate-400 hover:text-teal-400 transition-colors">
             <Search size={20} />
             <span className="font-medium">Search</span>
           </button>
@@ -181,7 +181,7 @@ const AboutSection = () => {
             <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
               {/* Ensure image sizing is controlled by the parent div */}
-              <img src="/poster.jpg" alt="About Us" className="h-full w-full object-cover" />
+              <img src="/poster.jpeg" alt="About Us" className="h-full w-full object-cover" />
               <div className="absolute bottom-6 left-6 z-20 text-white">
                 <p className="text-3xl font-bold">35+</p>
                 <p className="text-sm opacity-90">Years of Excellence</p>
