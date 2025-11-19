@@ -1,9 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Phone, MapPin, Search, Star, Calendar, 
   ArrowRight, Menu, X, Facebook, Linkedin, 
   Instagram, Youtube, Activity, Heart, Shield
 } from 'lucide-react';
+// REMOVED: Spline import and associated placeholder components to fix compilation error.
+import { useNavigate } from 'react-router-dom';
+
+
+// --- 0. SCROLLBAR HIDE STYLE (fixes horizontal scroll issue) ---
+const ScrollbarStyle = () => (
+    <style>
+        {`
+          /* Custom utility to hide scrollbar in horizontal flex containers */
+          .scrollbar-hide::-webkit-scrollbar {
+              display: none;
+          }
+          .scrollbar-hide {
+              -ms-overflow-style: none; /* IE and Edge */
+              scrollbar-width: none; /* Firefox */
+          }
+
+          /* Ensure all images scale correctly to their container size */
+          .h-full img, .w-full img {
+            max-width: 100%;
+            height: 100%;
+          }
+        `}
+    </style>
+);
 
 // --- 1. NAVBAR COMPONENT ---
 const Navbar = ({ toggleEmergency }) => {
@@ -21,7 +46,7 @@ const Navbar = ({ toggleEmergency }) => {
         {/* Logo Area */}
         <div className="flex items-center gap-4">
           <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-teal-400 shadow-lg bg-white">
-            <img src="logo.jpg" alt="Logo" className="h-full w-full object-cover" />
+            <img src="/logo.jpg" alt="Logo" className="h-full w-full object-cover" />
           </div>
           <div className="hidden md:block">
             <h1 className="text-3xl font-serif font-bold text-white leading-none tracking-wide">
@@ -92,7 +117,7 @@ const HeroSection = () => {
       <div className="bg-white/90 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-2xl max-w-4xl w-[90%] text-center mb-12 border-l-8 border-teal-500 animate-fade-in-up">
         <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           <div className="h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden shadow-inner border-4 border-slate-100 flex-shrink-0">
-             <img src="logo.jpg" alt="Arogyam" className="h-full w-full object-cover" />
+             <img src="/logo.jpg" alt="Arogyam" className="h-full w-full object-cover" />
           </div>
           <div className="text-center md:text-left">
             <h2 className="text-4xl md:text-5xl font-serif font-extrabold text-slate-800 leading-tight mb-2">
@@ -155,7 +180,8 @@ const AboutSection = () => {
             <div className="absolute -inset-4 bg-teal-600/20 rounded-2xl transform rotate-3"></div>
             <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-              <img src="poster.jpg" alt="About Us" className="h-full w-full object-cover" />
+              {/* Ensure image sizing is controlled by the parent div */}
+              <img src="/poster.jpg" alt="About Us" className="h-full w-full object-cover" />
               <div className="absolute bottom-6 left-6 z-20 text-white">
                 <p className="text-3xl font-bold">35+</p>
                 <p className="text-sm opacity-90">Years of Excellence</p>
@@ -169,7 +195,7 @@ const AboutSection = () => {
 };
 
 // --- 5. FACILITIES SECTION ---
-const FacilitiesSection = () => {
+const FacilitiesSection = ({ navigate }) => {
   return (
     <section className="py-20 bg-slate-50 relative z-10">
       <div className="max-w-7xl mx-auto px-6">
@@ -215,7 +241,33 @@ const FacilitiesSection = () => {
   );
 };
 
-// --- 6. DOCTORS SECTION ---
+// --- NEW 6. AI CALLOUT SECTION ---
+const AICalloutSection = ({ navigate }) => {
+    return (
+        <section className="py-16 bg-white relative z-10">
+            <div className="max-w-7xl mx-auto px-6">
+                <div className="bg-blue-600 text-white p-10 md:p-16 rounded-3xl shadow-2xl flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-10">
+                    <div className="flex items-center space-x-4">
+                        <Activity size={60} className="text-white animate-pulse" />
+                        <div>
+                            <h3 className="text-3xl font-extrabold mb-1">Need Immediate Advice?</h3>
+                            <p className="text-blue-200 text-lg">Speak to our AI Health Assistant right now.</p>
+                        </div>
+                    </div>
+                    <button 
+                        onClick={() => navigate('/callbot')}
+                        className="bg-red-500 hover:bg-red-600 text-white px-10 py-4 rounded-full font-bold shadow-xl transition-all text-lg flex items-center gap-2"
+                    >
+                        <Phone size={20} />
+                        Connect to Expert on Call
+                    </button>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+// --- 7. DOCTORS SECTION (Renumbered) ---
 const DoctorsSection = () => {
   const doctors = [
     { name: "Dr. R.S. Gupta", role: "Director and Chief", dept: "Internal Medicine", img: "doc1.jpeg" },
@@ -242,6 +294,7 @@ const DoctorsSection = () => {
           {doctors.map((doc, idx) => (
             <div key={idx} className="snap-center min-w-[300px] bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-300 group">
               <div className="h-64 w-full overflow-hidden">
+                {/* Ensure image sizing is controlled by the parent div */}
                 <img src={doc.img} alt={doc.name} className="h-full w-full object-cover object-top group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="p-6">
@@ -260,7 +313,7 @@ const DoctorsSection = () => {
   );
 };
 
-// --- 7. HOSPITALS SECTION ---
+// --- 8. HOSPITALS SECTION (Renumbered) ---
 const HospitalsSection = () => {
   const hospitals = [
     { name: "Pioneer Medical Care", rating: 4.5, img: "Hos1.jpeg" },
@@ -282,6 +335,7 @@ const HospitalsSection = () => {
           {hospitals.map((hos, idx) => (
             <div key={idx} className="bg-white rounded-xl p-3 shadow-md hover:shadow-xl transition-all border border-slate-100">
               <div className="h-40 rounded-lg overflow-hidden mb-3">
+                {/* Ensure image sizing is controlled by the parent div */}
                 <img src={hos.img} alt={hos.name} className="w-full h-full object-cover" />
               </div>
               <h4 className="font-bold text-slate-800 truncate">{hos.name}</h4>
@@ -298,7 +352,7 @@ const HospitalsSection = () => {
   );
 };
 
-// --- 8. STORIES SECTION ---
+// --- 9. STORIES SECTION (Renumbered) ---
 const StoriesSection = () => {
   const [activeStory, setActiveStory] = useState(null);
 
@@ -316,13 +370,23 @@ const StoriesSection = () => {
         <div className="grid md:grid-cols-3 gap-8">
           {stories.map((story, idx) => (
             <div key={idx} className="group relative overflow-hidden rounded-2xl shadow-lg cursor-pointer h-[400px]" onClick={() => setActiveStory(activeStory === idx ? null : idx)}>
+              {/* Ensure image sizing is controlled by the parent div */}
               <img src={story.img} alt={story.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-90"></div>
               
               <div className="absolute bottom-0 left-0 p-6 w-full transform transition-transform duration-300">
                 <h3 className="text-white text-xl font-bold mb-2 leading-tight">{story.title}</h3>
                 <div className={`overflow-hidden transition-all duration-500 ${activeStory === idx ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0 group-hover:max-h-40 group-hover:opacity-100'}`}>
-                  <p className="text-slate-300 text-sm mb-4">{story.desc}</p>
+                  <p className="text-slate-300 text-sm mb-4">
+                    {/* Placeholder for full story text when expanded */}
+                    {story.desc}
+                    {activeStory === idx && (
+                      <>
+                        <br/>
+                        <span className='text-xs font-light mt-1'> (Full story content for this entry would typically appear here) </span>
+                      </>
+                    )}
+                  </p>
                   <span className="text-teal-400 text-sm font-bold flex items-center gap-1">Read Full Story <ArrowRight size={14}/></span>
                 </div>
               </div>
@@ -334,7 +398,7 @@ const StoriesSection = () => {
   );
 };
 
-// --- 9. FOOTER COMPONENT ---
+// --- 10. FOOTER COMPONENT (Renumbered) ---
 const Footer = () => {
   return (
     <footer className="bg-slate-900 text-slate-300 relative z-10 pt-16 pb-8 border-t border-slate-800">
@@ -400,20 +464,25 @@ const Footer = () => {
   );
 };
 
-// --- 10. MAIN APP COMPONENT ---
+// --- 11. FLOATING SPLINE CHATBOT (REMOVED) ---
+// This function is no longer needed as the component is handled by the main App logic.
+
+// --- 12. MAIN APP COMPONENT (Renumbered) ---
 const ArogyamHealthcare = () => {
   const [isEmergencyOpen, setIsEmergencyOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="font-sans text-slate-800 bg-slate-50">
+      <ScrollbarStyle /> 
+      
       {/* Fixed Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[url('background.jpeg')] bg-cover bg-center bg-fixed"></div>
-        {/* Overlay to make text readable */}
+        <div className="absolute inset-0 bg-[url('/background.jpeg')] bg-cover bg-center bg-fixed"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/50 to-white/80 backdrop-blur-[2px]"></div>
       </div>
 
-      {/* Main Content Container */}
+      {/* Main Content Container (scrollable) */}
       <div className="relative z-10">
         <Navbar toggleEmergency={() => setIsEmergencyOpen(!isEmergencyOpen)} />
         
@@ -423,7 +492,11 @@ const ArogyamHealthcare = () => {
         
         <AboutSection />
         
-        <FacilitiesSection />
+        {/* NOTE: Passing navigate to FacilitiesSection in case you add a button there later */}
+        <FacilitiesSection navigate={navigate} />
+
+        {/* AI CALLOUT SECTION: Button connects to /callbot route */}
+        <AICalloutSection navigate={navigate} /> 
         
         <DoctorsSection />
         
@@ -432,6 +505,8 @@ const ArogyamHealthcare = () => {
         <StoriesSection />
         
         <Footer />
+        
+        {/* The FloatingSpline component is removed entirely to fix compilation */}
       </div>
     </div>
   );
