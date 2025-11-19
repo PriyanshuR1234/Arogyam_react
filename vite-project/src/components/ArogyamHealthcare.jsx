@@ -49,7 +49,7 @@ const Navbar = ({ toggleEmergency }) => {
             <img src="/logo.jpg" alt="Logo" className="h-full w-full object-cover" />
           </div>
           <div className="hidden md:block">
-            <h1 className="text-3xl font-serif font-bold text-white leading-none tracking-wide">
+            <h1 className="text-3xl font-serif font-bold text-teal-700 leading-none tracking-wide">
               Arogyam <span className="text-teal-400 block text-sm font-sans font-medium tracking-widest uppercase mt-1">Healthcare</span>
             </h1>
           </div>
