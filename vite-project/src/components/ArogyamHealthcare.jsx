@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  Phone, MapPin, Search, Star, Calendar, 
-  ArrowRight, Menu, X, Facebook, Linkedin, 
+import {
+  Phone, MapPin, Search, Star, Calendar,
+  ArrowRight, Menu, X, Facebook, Linkedin,
   Instagram, Youtube, Activity, Heart, Shield
 } from 'lucide-react';
-// REMOVED: Spline import and associated placeholder components to fix compilation error.
 import { useNavigate } from 'react-router-dom';
-
+import { doctors } from '../data/doctors';
+import { hospitals } from '../data/hospitals';
+import { stories } from '../data/stories';
 
 // --- 0. SCROLLBAR HIDE STYLE (fixes horizontal scroll issue) ---
 const ScrollbarStyle = () => (
-    <style>
-        {`
+  <style>
+    {`
           /* Custom utility to hide scrollbar in horizontal flex containers */
           .scrollbar-hide::-webkit-scrollbar {
               display: none;
@@ -27,7 +28,7 @@ const ScrollbarStyle = () => (
             height: 100%;
           }
         `}
-    </style>
+  </style>
 );
 
 // --- 1. NAVBAR COMPONENT ---
@@ -49,7 +50,7 @@ const Navbar = ({ toggleEmergency }) => {
             <img src="/logo.jpg" alt="Logo" className="h-full w-full object-cover" />
           </div>
           <div className="hidden md:block">
-            <h1 className="text-3xl font-serif font-bold text-slate-400 leading-none tracking-wide">
+            <h1 className="text-3xl font-serif font-bold text-teal-700 leading-none tracking-wide">
               Arogyam <span className="text-teal-400 block text-sm font-sans font-medium tracking-widest uppercase mt-1">Healthcare</span>
             </h1>
           </div>
@@ -57,12 +58,12 @@ const Navbar = ({ toggleEmergency }) => {
 
         {/* Actions */}
         <div className="flex items-center gap-6">
-          <button className="hidden md:flex items-center gap-2 text-slate-400 hover:text-teal-400 transition-colors">
+          <button className="hidden md:flex items-center gap-2 text-slate-300 hover:text-teal-400 transition-colors">
             <Search size={20} />
             <span className="font-medium">Search</span>
           </button>
-          
-          <button 
+
+          <button
             onClick={toggleEmergency}
             className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-full font-bold shadow-lg shadow-red-900/20 transition-all hover:scale-105 active:scale-95"
           >
@@ -83,7 +84,7 @@ const EmergencyWidget = ({ isOpen, toggle }) => {
         <button onClick={toggle} className="absolute right-4 top-4 text-slate-400 hover:text-white transition-colors">
           <X size={24} />
         </button>
-        
+
         <div className="flex items-center gap-3 mb-6 text-red-500 border-b border-slate-800 pb-4">
           <Phone size={28} />
           <h3 className="text-2xl font-bold">Emergency Contacts 24/7</h3>
@@ -117,11 +118,11 @@ const HeroSection = () => {
       <div className="bg-white/90 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-2xl max-w-4xl w-[90%] text-center mb-12 border-l-8 border-teal-500 animate-fade-in-up">
         <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           <div className="h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden shadow-inner border-4 border-slate-100 flex-shrink-0">
-             <img src="/logo.jpg" alt="Arogyam" className="h-full w-full object-cover" />
+            <img src="/logo.jpg" alt="Arogyam" className="h-full w-full object-cover" />
           </div>
           <div className="text-center md:text-left">
             <h2 className="text-4xl md:text-5xl font-serif font-extrabold text-slate-800 leading-tight mb-2">
-              "Create Healthy Habits, <br/>
+              "Create Healthy Habits, <br />
               <span className="text-teal-600">Not Restrictions."</span>
             </h2>
             <p className="text-slate-500 font-medium mt-4 text-lg">Your journey to wellness begins here.</p>
@@ -165,7 +166,7 @@ const AboutSection = () => {
             <p className="text-slate-600 text-lg leading-relaxed">
               Welcome to <span className="font-bold text-slate-900">Arogyam Healthcare</span>. We are committed to providing comprehensive, high-quality healthcare services to individuals of all ages. Our dedicated team of professionals combines state-of-the-art technology with a patient-centric approach.
             </p>
-            
+
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
               {['Preventive Care', 'Specialised Consultations', 'Emergency Care', 'Wellness Programs', 'Robotic Surgery', 'Personalised Plans'].map((item, i) => (
                 <li key={i} className="flex items-center gap-2 text-slate-700 font-medium">
@@ -175,7 +176,7 @@ const AboutSection = () => {
               ))}
             </ul>
           </div>
-          
+
           <div className="relative">
             <div className="absolute -inset-4 bg-teal-600/20 rounded-2xl transform rotate-3"></div>
             <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl">
@@ -224,15 +225,15 @@ const FacilitiesSection = ({ navigate }) => {
                 Join Membership <ArrowRight size={20} />
               </button>
             </div>
-            
+
             {/* Placeholder for Procedure Slider or iframe */}
             <div className="h-[350px] w-full bg-white/10 backdrop-blur-sm rounded-xl border border-white/10 flex flex-col items-center justify-center text-center p-6">
-               <Activity size={48} className="text-teal-400 mb-4" />
-               <h4 className="text-xl font-bold mb-2">Interactive Procedures Guide</h4>
-               <p className="text-slate-400 text-sm">Explore our specialized treatments and medical procedures visualizer here.</p>
-               <div className="mt-6 px-4 py-2 bg-white/5 rounded-lg text-xs text-slate-500">
-                 [Interactive Component Placeholder]
-               </div>
+              <Activity size={48} className="text-teal-400 mb-4" />
+              <h4 className="text-xl font-bold mb-2">Interactive Procedures Guide</h4>
+              <p className="text-slate-400 text-sm">Explore our specialized treatments and medical procedures visualizer here.</p>
+              <div className="mt-6 px-4 py-2 bg-white/5 rounded-lg text-xs text-slate-500">
+                [Interactive Component Placeholder]
+              </div>
             </div>
           </div>
         </div>
@@ -243,45 +244,32 @@ const FacilitiesSection = ({ navigate }) => {
 
 // --- NEW 6. AI CALLOUT SECTION ---
 const AICalloutSection = ({ navigate }) => {
-    return (
-        <section className="py-16 bg-white relative z-10">
-            <div className="max-w-7xl mx-auto px-6">
-                <div className="bg-blue-600 text-white p-10 md:p-16 rounded-3xl shadow-2xl flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-10">
-                    <div className="flex items-center space-x-4">
-                        <Activity size={60} className="text-white animate-pulse" />
-                        <div>
-                            <h3 className="text-3xl font-extrabold mb-1">Need Immediate Advice?</h3>
-                            <p className="text-blue-200 text-lg">Speak to our AI Health Assistant right now.</p>
-                        </div>
-                    </div>
-                    <button 
-                        onClick={() => navigate('/callbot')}
-                        className="bg-red-500 hover:bg-red-600 text-white px-10 py-4 rounded-full font-bold shadow-xl transition-all text-lg flex items-center gap-2"
-                    >
-                        <Phone size={20} />
-                        Connect to Expert on Call
-                    </button>
-                </div>
+  return (
+    <section className="py-16 bg-white relative z-10">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="bg-blue-600 text-white p-10 md:p-16 rounded-3xl shadow-2xl flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-10">
+          <div className="flex items-center space-x-4">
+            <Activity size={60} className="text-white animate-pulse" />
+            <div>
+              <h3 className="text-3xl font-extrabold mb-1">Need Immediate Advice?</h3>
+              <p className="text-blue-200 text-lg">Speak to our AI Health Assistant right now.</p>
             </div>
-        </section>
-    );
+          </div>
+          <button
+            onClick={() => navigate('/callbot')}
+            className="bg-red-500 hover:bg-red-600 text-white px-10 py-4 rounded-full font-bold shadow-xl transition-all text-lg flex items-center gap-2"
+          >
+            <Phone size={20} />
+            Connect to Expert on Call
+          </button>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 // --- 7. DOCTORS SECTION (Renumbered) ---
-const DoctorsSection = () => {
-  const doctors = [
-    { name: "Dr. R.S. Gupta", role: "Director and Chief", dept: "Internal Medicine", img: "doc1.jpeg" },
-    { name: "Dr. Subhash Chaturvedi", role: "Chairman", dept: "Cardiology", img: "doc2.jpeg" },
-    { name: "Dr. Vinni Kapoor", role: "Chairman", dept: "Cancer Care", img: "doc3.jpeg" },
-    { name: "Dr. Pradeep Chaudhary", role: "Director", dept: "Laparoscopy", img: "doc4.jpeg" },
-    { name: "Dr. Sudha Sharma", role: "Chairman", dept: "Gynecology", img: "doc5.jpeg" },
-    { name: "Dr. Vijay Kohli", role: "Director", dept: "Urology", img: "doc6.jpeg" },
-    { name: "Dr. Balbir Dosanjh", role: "Chairman", dept: "Orthopaedics", img: "doc7.jpeg" },
-    { name: "Dr. Meenu Walia", role: "Chairman", dept: "Neurosurgery", img: "doc8.jpeg" },
-    { name: "Dr. Neeru Parashar", role: "Director", dept: "Pulmonology", img: "doc9.jpeg" },
-    { name: "Dr. Sanjay Sachdeva", role: "Head", dept: "ENT", img: "doc10.jpeg" },
-  ];
-
+const DoctorsSection = ({ navigate }) => {
   return (
     <section className="py-20 bg-white relative z-10">
       <div className="max-w-7xl mx-auto px-6">
@@ -301,7 +289,9 @@ const DoctorsSection = () => {
                 <h3 className="text-xl font-bold text-slate-900 mb-1">{doc.name}</h3>
                 <p className="text-teal-600 font-medium text-sm mb-2">{doc.dept}</p>
                 <p className="text-slate-500 text-xs mb-4">{doc.role}</p>
-                <button className="w-full py-2 border border-slate-200 rounded-lg text-slate-700 font-semibold hover:bg-teal-600 hover:text-white hover:border-teal-600 transition-all">
+                <button
+                  onClick={() => navigate(`/doctor/${doc.id}`)}
+                  className="w-full py-2 border border-slate-200 rounded-lg text-slate-700 font-semibold hover:bg-teal-600 hover:text-white hover:border-teal-600 transition-all">
                   View Profile
                 </button>
               </div>
@@ -314,23 +304,12 @@ const DoctorsSection = () => {
 };
 
 // --- 8. HOSPITALS SECTION (Renumbered) ---
-const HospitalsSection = () => {
-  const hospitals = [
-    { name: "Pioneer Medical Care", rating: 4.5, img: "Hos1.jpeg" },
-    { name: "Sanjeevni Hospital", rating: 4.5, img: "Hos2.jpeg" },
-    { name: "Infinity Healthcare", rating: 4.1, img: "Hos3.jpeg" },
-    { name: "Bharatam University", rating: 4.0, img: "Hos4.jpeg" },
-    { name: "Medivista Healthcare", rating: 3.9, img: "Hos5.jpeg" },
-    { name: "Arogya Kendra", rating: 3.8, img: "Hos6.jpeg" },
-    { name: "HopeString Institute", rating: 3.7, img: "Hos7.jpeg" },
-    { name: "Sukoon Hospital", rating: 3.6, img: "Hos8.jpeg" },
-  ];
-
+const HospitalsSection = ({ navigate }) => {
   return (
     <section className="py-20 bg-slate-50 relative z-10">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-3xl font-bold text-slate-900 mb-10 border-l-4 border-teal-500 pl-4">Connected Network Hospitals</h2>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {hospitals.map((hos, idx) => (
             <div key={idx} className="bg-white rounded-xl p-3 shadow-md hover:shadow-xl transition-all border border-slate-100">
@@ -343,7 +322,7 @@ const HospitalsSection = () => {
                 <Star size={14} fill="currentColor" />
                 <span className="text-slate-600 font-semibold">{hos.rating}</span>
               </div>
-              <a href="#" className="text-xs text-teal-600 font-bold mt-3 block hover:underline uppercase tracking-wide">View Location</a>
+              <button onClick={() => navigate(`/hospital/${hos.id}`)} className="text-xs text-teal-600 font-bold mt-3 block hover:underline uppercase tracking-wide text-left">View Location</button>
             </div>
           ))}
         </div>
@@ -353,41 +332,35 @@ const HospitalsSection = () => {
 };
 
 // --- 9. STORIES SECTION (Renumbered) ---
-const StoriesSection = () => {
+const StoriesSection = ({ navigate }) => {
   const [activeStory, setActiveStory] = useState(null);
-
-  const stories = [
-    { title: "Miraculous Recovery: Brain Aneurysm", img: "card1.jpg", desc: "Mrs. Priya Verma's life-saving journey through our advanced Neuro-ICU intervention." },
-    { title: "Victory Over Sepsis", img: "card2.jpg", desc: "How 55-year-old Mr. Patel fought a critical infection with our dedicated intensive care team." },
-    { title: "Triumph Over Multi-Organ Failure", img: "card3.jpg", desc: "Mrs. Shalini Rao's incredible recovery powered by advanced dialysis and teamwork." },
-  ];
 
   return (
     <section className="py-20 bg-white relative z-10">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-center text-4xl font-bold text-slate-900 mb-12">Real Stories, Real <span className="text-teal-600">Hope</span></h2>
-        
+
         <div className="grid md:grid-cols-3 gap-8">
           {stories.map((story, idx) => (
             <div key={idx} className="group relative overflow-hidden rounded-2xl shadow-lg cursor-pointer h-[400px]" onClick={() => setActiveStory(activeStory === idx ? null : idx)}>
               {/* Ensure image sizing is controlled by the parent div */}
               <img src={story.img} alt={story.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-90"></div>
-              
+
               <div className="absolute bottom-0 left-0 p-6 w-full transform transition-transform duration-300">
                 <h3 className="text-white text-xl font-bold mb-2 leading-tight">{story.title}</h3>
                 <div className={`overflow-hidden transition-all duration-500 ${activeStory === idx ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0 group-hover:max-h-40 group-hover:opacity-100'}`}>
                   <p className="text-slate-300 text-sm mb-4">
                     {/* Placeholder for full story text when expanded */}
-                    {story.desc}
+                    {story.summary}
                     {activeStory === idx && (
                       <>
-                        <br/>
+                        <br />
                         <span className='text-xs font-light mt-1'> (Full story content for this entry would typically appear here) </span>
                       </>
                     )}
                   </p>
-                  <span className="text-teal-400 text-sm font-bold flex items-center gap-1">Read Full Story <ArrowRight size={14}/></span>
+                  <button onClick={(e) => { e.stopPropagation(); navigate(`/story/${story.id}`); }} className="text-teal-400 text-sm font-bold flex items-center gap-1 hover:underline">Read Full Story <ArrowRight size={14} /></button>
                 </div>
               </div>
             </div>
@@ -413,8 +386,8 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-           {/* Column 2 */}
-           <div>
+          {/* Column 2 */}
+          <div>
             <h4 className="text-white font-bold text-lg mb-4 border-b-2 border-teal-500 inline-block pb-1">International</h4>
             <ul className="space-y-2 text-sm">
               {['Request Appointment', 'Get Opinion', 'Medical Visa', 'Plan Your Trip'].map((item, i) => (
@@ -422,8 +395,8 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-           {/* Column 3 */}
-           <div>
+          {/* Column 3 */}
+          <div>
             <h4 className="text-white font-bold text-lg mb-4 border-b-2 border-teal-500 inline-block pb-1">Academics</h4>
             <ul className="space-y-2 text-sm">
               {['Fellowship Programs', 'DNB Programs', 'Nursing College', 'Research', 'Our Alumni'].map((item, i) => (
@@ -442,8 +415,8 @@ const Footer = () => {
             </div>
             <p className="text-xs text-slate-500 mb-2">Download our App</p>
             <div className="flex gap-2">
-               <div className="h-8 w-24 bg-slate-800 rounded border border-slate-700 flex items-center justify-center text-xs font-bold cursor-pointer hover:bg-slate-700">Google Play</div>
-               <div className="h-8 w-24 bg-slate-800 rounded border border-slate-700 flex items-center justify-center text-xs font-bold cursor-pointer hover:bg-slate-700">App Store</div>
+              <div className="h-8 w-24 bg-slate-800 rounded border border-slate-700 flex items-center justify-center text-xs font-bold cursor-pointer hover:bg-slate-700">Google Play</div>
+              <div className="h-8 w-24 bg-slate-800 rounded border border-slate-700 flex items-center justify-center text-xs font-bold cursor-pointer hover:bg-slate-700">App Store</div>
             </div>
           </div>
         </div>
@@ -451,11 +424,11 @@ const Footer = () => {
         <div className="border-t border-slate-800 pt-8 text-center text-xs text-slate-500">
           <p className="mb-2">Advisory: Please beware of fraudulent websites or calls asking for payments. Arogyam Healthcare never charges for job applications.</p>
           <div className="flex justify-center gap-4 mb-4">
-             <a href="#" className="hover:text-white">Privacy Policy</a>
-             <span>|</span>
-             <a href="#" className="hover:text-white">Disclaimer</a>
-             <span>|</span>
-             <a href="#" className="hover:text-white">Contact Us</a>
+            <a href="#" className="hover:text-white">Privacy Policy</a>
+            <span>|</span>
+            <a href="#" className="hover:text-white">Disclaimer</a>
+            <span>|</span>
+            <a href="#" className="hover:text-white">Contact Us</a>
           </div>
           <p>© 2024 Arogyam Healthcare. All rights reserved.</p>
         </div>
@@ -464,9 +437,6 @@ const Footer = () => {
   );
 };
 
-// --- 11. FLOATING SPLINE CHATBOT (REMOVED) ---
-// This function is no longer needed as the component is handled by the main App logic.
-
 // --- 12. MAIN APP COMPONENT (Renumbered) ---
 const ArogyamHealthcare = () => {
   const [isEmergencyOpen, setIsEmergencyOpen] = useState(false);
@@ -474,8 +444,8 @@ const ArogyamHealthcare = () => {
 
   return (
     <div className="font-sans text-slate-800 bg-slate-50">
-      <ScrollbarStyle /> 
-      
+      <ScrollbarStyle />
+
       {/* Fixed Background */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-[url('/background.jpeg')] bg-cover bg-center bg-fixed"></div>
@@ -485,27 +455,27 @@ const ArogyamHealthcare = () => {
       {/* Main Content Container (scrollable) */}
       <div className="relative z-10">
         <Navbar toggleEmergency={() => setIsEmergencyOpen(!isEmergencyOpen)} />
-        
+
         <EmergencyWidget isOpen={isEmergencyOpen} toggle={() => setIsEmergencyOpen(false)} />
-        
+
         <HeroSection />
-        
+
         <AboutSection />
-        
+
         {/* NOTE: Passing navigate to FacilitiesSection in case you add a button there later */}
         <FacilitiesSection navigate={navigate} />
 
         {/* AI CALLOUT SECTION: Button connects to /callbot route */}
-        <AICalloutSection navigate={navigate} /> 
-        
-        <DoctorsSection />
-        
-        <HospitalsSection />
-        
-        <StoriesSection />
-        
+        <AICalloutSection navigate={navigate} />
+
+        <DoctorsSection navigate={navigate} />
+
+        <HospitalsSection navigate={navigate} />
+
+        <StoriesSection navigate={navigate} />
+
         <Footer />
-        
+
         {/* The FloatingSpline component is removed entirely to fix compilation */}
       </div>
     </div>
